@@ -1,12 +1,13 @@
-export const fixJSON = (jsonString: string):any => {
+import { jsonrepair } from 'jsonrepair'
 
-  return jsonString.replaceAll('```', '').replace('json', '')
+export const fixJSON = (jsonString: string): any => {
+  const sub = '{' + jsonString.substring(3)
 
-  // try {
-  //   let parsedData = JSON.parse(cleanedString)
-  //   return parsedData
-  // } catch (error) {
-  //   console.error('Failed to parse JSON:', error)
-  //   return null
-  // }
+  try {
+    const repaired = jsonrepair(sub)
+    return JSON.parse(repaired)
+  } catch (error) {
+    console.error('Failed to parse JSON:', error)
+    return null
+  }
 }

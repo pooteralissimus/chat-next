@@ -24,22 +24,6 @@ const Page: FC<PageProps> = ({}) => {
     console.log('responseData2', responseData2)
 
     setThread(responseData2.data.thread)
-
-    //////////////////
-
-    // const response3 = await fetch('/api/send-message', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     thread: responseData2.data.thread,
-    //     message: 'Hello',
-    //   }),
-    // })
-    //
-    // const responseData3 = (await response3.json()) as any
-    // console.log('responseData3', JSON.parse(responseData3.data.replace(/```json|```/g, '').trim()))
   }
 
   return (

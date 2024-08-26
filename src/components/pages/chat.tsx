@@ -91,11 +91,10 @@ const Chat: React.FC = ({ thread }) => {
         }
 
         const res = await response.json()
-
-        // const assistantMessage = fixJSON(res.data)
+        const assistantMessage = fixJSON(res.data)
         // console.log('assistantMessage', assistantMessage)
 
-        displayMessage(res.data, false, true)
+        displayMessage(assistantMessage?.json?.response || res.data, false, true)
       } catch (error) {
         console.error('Error during fetch:', error)
       }
