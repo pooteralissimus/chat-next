@@ -3,7 +3,11 @@ import Image from 'next/image'
 import '@/styles/Chat.css'
 import { fixJSON } from '@/utils/parser'
 
-const Chat: React.FC = ({ thread }) => {
+interface Props{
+  thread:any
+}
+
+const Chat: React.FC<Props> = ({ thread }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [messages, setMessages] = useState<Array<{ text: string; isRight: boolean; isAssistant?: boolean; isNew?: boolean }>>([])
@@ -17,8 +21,8 @@ const Chat: React.FC = ({ thread }) => {
   const [showOptionsDropdown, setShowOptionsDropdown] = useState(false)
   const [isInputDisabled, setIsInputDisabled] = useState(false)
   const [isAssistantTyping, setIsAssistantTyping] = useState(false)
-  const chatBodyRef = useRef<HTMLDivElement>(null)
-  const optionsDropdownRef = useRef<HTMLDivElement>(null)
+  const chatBodyRef = useRef<HTMLDivElement|null>(null)
+  const optionsDropdownRef = useRef<HTMLDivElement|null>(null)
 
   useEffect(() => {
     const loadChatState = () => {
@@ -67,7 +71,7 @@ const Chat: React.FC = ({ thread }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (optionsDropdownRef.current && !optionsDropdownRef.current.contains(event.target as Node)) {
+      if (optionsDropdownRef.current && !optionsDropdownRef.current?.contains(event.target as Node)) {
         setShowOptionsDropdown(false)
       }
     }
@@ -252,7 +256,7 @@ const Chat: React.FC = ({ thread }) => {
 
   useEffect(() => {
     if (chatBodyRef.current) {
-      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight
+      chatBodyRef.current!.scrollTop = chatBodyRef.current!.scrollHeight
     }
   }, [messages])
 
@@ -309,7 +313,7 @@ const Chat: React.FC = ({ thread }) => {
                     </div>
                     <div className='message-assistant-info'>
                       <span id='diversified' className={showConsultation ? 'hidden' : ''}>Diversified Nurse Consultants</span>
-                      <p className='message-assistant-text text'>{message.text}</p>
+                      <p className='message-assistant-text text' dangerouslySetInnerHTML={{__html:message.text.replaceAll('\n','<br/>')}} />
                     </div>
                   </div>
                   <div className={`message-assistant-small small-text ${showConsultation ? '' : 'hidden'} ${isCollapsed ? 'text-white' : ''}`}>
@@ -335,7 +339,7 @@ const Chat: React.FC = ({ thread }) => {
               <div className='chat-options user-messages'>
                 <button type='button' id='button-consultant' className='chat-option text message message-right' onClick={handleConsultantClick}>Chat with consultant</button>
                 <button type='button' id='button-services' className='chat-option text message message-right' onClick={handleServicesClick}>Learn more about services</button>
-                <button type='button' id='button-support' className='chat-option text message message-right' onClick={handleSupportClick}>I'm a customer and need support</button>
+                <button type='button' id='button-support' className='chat-option text message message-right' onClick={handleSupportClick}>I&apos;m a customer and need support</button>
               </div>
             )}
 
@@ -368,7 +372,7 @@ const Chat: React.FC = ({ thread }) => {
             <div className='chat-services'>
               <button type='button' className='chat-option' onClick={() => handleServiceOptionClick('Transitional Care Management')}>Transitional Care Management</button>
               <button type='button' className='chat-option' onClick={() => handleServiceOptionClick('Relocation Support')}>Relocation Support</button>
-              <button type='button' className='chat-option' onClick={() => handleServiceOptionClick('Alzheimer\'s/Dementia Management')}>Alzheimer's/Dementia Management</button>
+              <button type='button' className='chat-option' onClick={() => handleServiceOptionClick('Alzheimer\'s/Dementia Management')}>Alzheimer&apos;s/Dementia Management</button>
             </div>
           )}
         </div>
