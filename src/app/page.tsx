@@ -1,54 +1,52 @@
-'use client';
-import Chat from '../components/pages/chat';
+'use client'
+import Chat from '../components/pages/chat'
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react'
 
 type PageProps = {};
-// 
-const Page: FC<PageProps> = ({ }) => {
 
-    useEffect(() => {
-        testFunction()
-    }, [])
+const Page: FC<PageProps> = ({}) => {
 
-    const testFunction = async () => {
-        // Fetch the file from the public folder using a relative path
-        const response = await fetch('/files/forChatGPT.docx');
-        const blob = await response.blob();
+  const [thread, setThread] = useState()
 
+  useEffect(() => {
+    testFunction()
+  }, [])
 
-        const formData = new FormData()
-        formData.append('files', blob, 'forChatGPT.docx')
+  const testFunction = async () => {
 
-        // console.log(blob);
+    const response2 = await fetch('/api/new-chat', {
+      method: 'POST',
+    })
 
-        //
-        // const response = await fetch('/api/create-assistant', {
-        //     method: 'POST',
-        //     // body: formData,
-        // });
-        //
-        // const responseData = (await response.json()) as any;
+    const responseData2 = (await response2.json()) as any
 
-        // console.log('responseData', responseData)
+    console.log('responseData2', responseData2)
 
+    setThread(responseData2.data.thread)
 
-        const response2 = await fetch('/api/create-vector-id', {
-            method: 'POST',
-            body: formData,
-        });
+    //////////////////
 
-        const responseData2 = (await response2.json()) as any;
+    // const response3 = await fetch('/api/send-message', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     thread: responseData2.data.thread,
+    //     message: 'Hello',
+    //   }),
+    // })
+    //
+    // const responseData3 = (await response3.json()) as any
+    // console.log('responseData3', JSON.parse(responseData3.data.replace(/```json|```/g, '').trim()))
+  }
 
+  return (
+    <main>
+      <Chat thread={thread}></Chat>
+    </main>
+  )
+}
 
-        console.log('responseData2', responseData2)
-    }
-
-    return (
-        <main>
-            <Chat></Chat>
-        </main>
-    );
-};
-
-export default Page;
+export default Page
